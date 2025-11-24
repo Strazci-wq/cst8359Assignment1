@@ -1,0 +1,67 @@
+@model VeterinaryClinic.Models.VetDoctor
+
+@{
+    ViewData["Title"] = "Delete Veterinarian";
+}
+
+<div class="page-header bg-danger">
+    <div class="container">
+        <h1><i class="bi bi-exclamation-triangle"></i> Delete Veterinarian</h1>
+        <p class="mb-0">Delete this vet?</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-danger">
+                <h5 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Warning!</h5>
+                <p class="mb-0">This can't be undone.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Veterinarian Information</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            <i class="bi bi-person"></i> Name
+                        </dt>
+                        <dd class="col-sm-8">
+                            <strong>@Html.DisplayFor(model => model.Name)</strong>
+                        </dd>
+                        <dt class="col-sm-4">
+                            <i class="bi bi-briefcase"></i> Specialty
+                        </dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info">@Html.DisplayFor(model => model.Specialty)</span>
+                        </dd>
+                    </dl>
+                    
+                    @if (Model.Pets != null && Model.Pets.Any())
+                    {
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-exclamation-triangle"></i> <strong>Warning:</strong> This veterinarian has <strong>@Model.Pets.Count()</strong> assigned pet(s). 
+                            You cannot delete this veterinarian while pets are assigned to them. Please reassign or remove the pets first.
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <form action="/VetDoctors/Delete/@Model.Id" method="post" class="mt-4">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger" @(Model.Pets != null && Model.Pets.Any() ? "disabled" : "")>
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                    <a href="/VetDoctors" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                    <a href="/" class="btn btn-outline-primary">
+                        <i class="bi bi-house-door"></i> Home
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

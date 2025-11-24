@@ -1,0 +1,59 @@
+@model VeterinaryClinic.Models.VetDoctor
+
+@{
+    ViewData["Title"] = "Create Veterinarian";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-person-plus"></i> Add Veterinarian</h1>
+        <p class="mb-0">New vet info</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/VetDoctors/Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="Name" class="form-label">
+                                <i class="bi bi-person"></i> Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="Name" name="Name" class="form-control" placeholder="Name" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="Specialty" class="form-label">
+                                <i class="bi bi-briefcase"></i> Specialty <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="Specialty" name="Specialty" class="form-control" placeholder="e.g., Surgery, Small Animals, etc." required />
+                            <span asp-validation-for="Specialty" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Add
+                            </button>
+                            <a href="/VetDoctors" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <a href="/" class="btn btn-outline-primary">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

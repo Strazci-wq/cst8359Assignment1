@@ -1,0 +1,84 @@
+@model VeterinaryClinic.Models.Pet
+
+@{
+    ViewData["Title"] = "Create Pet";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-heart-fill"></i> Add Pet</h1>
+        <p class="mb-0">New pet info</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/Pets/Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="MicrochipId" class="form-label">
+                                <i class="bi bi-upc-scan"></i> Microchip ID <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="MicrochipId" name="MicrochipId" class="form-control" placeholder="Microchip ID" required />
+                            <span asp-validation-for="MicrochipId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="Name" class="form-label">
+                                <i class="bi bi-tag"></i> Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="Name" name="Name" class="form-control" placeholder="Pet name" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="Species" class="form-label">
+                                <i class="bi bi-bug"></i> Species <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="Species" name="Species" class="form-control" placeholder="e.g., Dog, Cat, etc." required />
+                            <span asp-validation-for="Species" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="VetDoctorId" class="form-label">
+                                <i class="bi bi-person-badge"></i> Assigned Veterinarian <span class="text-danger">*</span>
+                            </label>
+                            <select id="VetDoctorId" name="VetDoctorId" class="form-select" required>
+                                <option value="">-- Pick a Vet --</option>
+                                @if (ViewBag.VetDoctorId != null)
+                                {
+                                    @foreach (var item in (SelectList)ViewBag.VetDoctorId)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="VetDoctorId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Add
+                            </button>
+                            <a href="/Pets" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <a href="/" class="btn btn-outline-primary">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

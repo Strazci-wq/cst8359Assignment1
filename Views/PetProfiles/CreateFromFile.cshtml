@@ -1,0 +1,126 @@
+@{
+    ViewData["Title"] = "Create Pet Profile (File Upload)";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-cloud-upload"></i> Upload Pet Profile</h1>
+        <p class="mb-0">Upload a .txt file with vet notes</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> <strong>Note:</strong> Pick a pet and upload a .txt file. Only .txt files work.
+                    </div>
+                    
+                    <form action="/PetProfiles/CreateFromFile" method="post" enctype="multipart/form-data" id="uploadForm">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="PetId" class="form-label">
+                                <i class="bi bi-heart"></i> Pet <span class="text-danger">*</span>
+                            </label>
+                            <select name="PetId" id="PetId" class="form-select" required>
+                                <option value="">-- Pick a Pet --</option>
+                                @if (ViewBag.PetId != null)
+                                {
+                                    @foreach (var item in (SelectList)ViewBag.PetId)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="PetId" data-valmsg-replace="true"></span>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="file" class="form-label">
+                                <i class="bi bi-file-earmark-text"></i> Upload .txt File <span class="text-danger">*</span>
+                            </label>
+                            <div class="file-upload-area" id="uploadArea">
+                                <i class="bi bi-cloud-upload" style="font-size: 3rem; color: #6c757d;"></i>
+                                <p class="mt-2 mb-1"><strong>Click to select a file or drag and drop</strong></p>
+                                <p class="text-muted mb-0">Only .txt files are accepted</p>
+                                <input type="file" name="file" id="file" class="form-control mt-3 d-none" accept=".txt" />
+                                <div id="fileName" class="mt-2 text-primary fw-bold"></div>
+                            </div>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="file" data-valmsg-replace="true"></span>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-upload"></i> Upload
+                            </button>
+                            <a href="/PetProfiles" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <a href="/" class="btn btn-outline-primary">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3">
+                <a href="/PetProfiles/Create" class="btn btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Or type it in
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('file');
+        const fileName = document.getElementById('fileName');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                updateFileName();
+            }
+        });
+
+        fileInput.addEventListener('change', updateFileName);
+
+        function updateFileName() {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                if (file.name.endsWith('.txt')) {
+                    fileName.textContent = `Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                    fileName.className = 'mt-2 text-success fw-bold';
+                } else {
+                    fileName.textContent = 'Error: Please select a .txt file';
+                    fileName.className = 'mt-2 text-danger fw-bold';
+                    fileInput.value = '';
+                }
+            } else {
+                fileName.textContent = '';
+            }
+        }
+    </script>
+}

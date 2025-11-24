@@ -1,0 +1,66 @@
+@model VeterinaryClinic.Models.PetProfile
+
+@{
+    ViewData["Title"] = "Edit Pet Profile";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-pencil-square"></i> Edit Pet Profile</h1>
+        <p class="mb-0">Change vet notes</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> <strong>Pet:</strong> @Model.Pet?.Name - This cannot be changed after profile creation.
+                    </div>
+                    
+                    <form action="/PetProfiles/Edit/@Model.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="PetId" class="form-label">
+                                <i class="bi bi-heart"></i> Pet
+                            </label>
+                            <select asp-for="PetId" class="form-select" asp-items="ViewBag.PetId" disabled>
+                            </select>
+                            <input type="hidden" asp-for="PetId" />
+                            <small class="form-text text-muted">Pet cannot be changed after profile creation.</small>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label asp-for="VetNotes" class="form-label">
+                                <i class="bi bi-file-text"></i> Veterinary Notes
+                            </label>
+                            <textarea asp-for="VetNotes" class="form-control" rows="12"></textarea>
+                            <span asp-validation-for="VetNotes" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Save
+                            </button>
+                            <a href="/PetProfiles" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <a href="/" class="btn btn-outline-primary">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

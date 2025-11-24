@@ -1,0 +1,110 @@
+@{
+    ViewData["Title"] = "Home";
+    var stats = ViewBag.Stats as dynamic;
+}
+
+<div class="page-header text-center mb-4">
+    <div class="container">
+        <h1 class="display-4 mb-2"><i class="bi bi-heart-pulse"></i> Veterinary Clinic System</h1>
+        <p class="lead mb-0">Manage vets, pets, and their records</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="stat-card text-center">
+                <div class="stat-icon text-primary">
+                    <i class="bi bi-person-badge"></i>
+                </div>
+                <div class="stat-value">@(stats?.VetDoctorsCount ?? 0)</div>
+                <div class="stat-label">Veterinarians</div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stat-card text-center">
+                <div class="stat-icon text-success">
+                    <i class="bi bi-heart"></i>
+                </div>
+                <div class="stat-value">@(stats?.PetsCount ?? 0)</div>
+                <div class="stat-label">Pets</div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stat-card text-center">
+                <div class="stat-icon text-info">
+                    <i class="bi bi-file-earmark-medical"></i>
+                </div>
+                <div class="stat-value">@(stats?.PetProfilesCount ?? 0)</div>
+                <div class="stat-label">Pet Profiles</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Access Cards -->
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-person-badge-fill text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title text-center">Veterinarians</h5>
+                    <p class="card-text text-center text-muted">Add and manage vets</p>
+                    <div class="mt-auto">
+                        <a href="/VetDoctors" class="btn btn-primary w-100">
+                            <i class="bi bi-eye"></i> View Veterinarians
+                        </a>
+                        <a href="/VetDoctors/Create" class="btn btn-outline-primary w-100 mt-2">
+                            <i class="bi bi-plus-circle"></i> Add New
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-heart-fill text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title text-center">Pets</h5>
+                    <p class="card-text text-center text-muted">Add pets and assign them to vets</p>
+                    <div class="mt-auto">
+                        <a href="/Pets" class="btn btn-success w-100">
+                            <i class="bi bi-eye"></i> View Pets
+                        </a>
+                        <a href="/Pets/Create" class="btn btn-outline-success w-100 mt-2">
+                            <i class="bi bi-plus-circle"></i> Add New
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-file-earmark-medical-fill text-info" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title text-center">Pet Profiles</h5>
+                    <p class="card-text text-center text-muted">Store vet notes. Type them in or upload a file.</p>
+                    <div class="mt-auto">
+                        <a href="/PetProfiles" class="btn btn-info w-100 text-white">
+                            <i class="bi bi-eye"></i> View Profiles
+                        </a>
+                        <div class="btn-group w-100 mt-2" role="group">
+                            <a href="/PetProfiles/Create" class="btn btn-outline-info">
+                                <i class="bi bi-pencil"></i> Form
+                            </a>
+                            <a href="/PetProfiles/CreateFromFile" class="btn btn-outline-info">
+                                <i class="bi bi-upload"></i> Upload
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
