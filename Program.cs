@@ -5,37 +5,27 @@ using VeterinaryClinic.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 // Add DbContext
 builder.Services.AddDbContext<VeterinaryClinicDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-    app.UseHttpsRedirection();
-}
-else
-{
-    app.UseDeveloperExceptionPage();
-}
-
-// Static files must be before routing
-app.UseStaticFiles();
+// Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
-// Conventional routing
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// Map API controllers
+app.MapControllers();
 
 // Seed database
 using (var scope = app.Services.CreateScope())
